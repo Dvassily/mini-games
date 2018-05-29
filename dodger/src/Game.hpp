@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.hpp"
+#include "Player.hpp"
 
 class Game
 {
@@ -14,12 +15,9 @@ private:
     const std::string gameOverString = "Game over. Press a key to restart the game";
     const std::string initString = "Press a key to start the game";
     const int moveOffset = 10;
-    const sf::Texture& enemyTexture;
-    sf::Sprite playerSprite;
+    Player& player;
     std::vector<Enemy*> enemies;
     sf::RenderWindow& window;
-    int enemyRate;
-    int enemyCounter = 0;
     sf::Clock clock;
     sf::Font font;
     sf::Text initText;
@@ -27,15 +25,10 @@ private:
     GameState state = INIT;
     
 public:
-    Game(const sf::Texture& playerTexture, const sf::Texture& enemyTexture, sf::RenderWindow& window, int enemyRate);
+    Game(sf::RenderWindow& window, Player& player);
     void render();
     void moveEnemies();
-    void movePlayerLeft();
-    void movePlayerRight();
-    void movePlayerDown();
-    void movePlayerUp();
-    bool checkAddEnemy();
-    void addEnemy();
+    void addEnemy(Enemy* const enemy);
     bool checkCollision();
     void start();
     void stop();

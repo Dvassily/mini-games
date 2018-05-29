@@ -1,6 +1,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Game.hpp"
+#include "EnemyGenerator.hpp"
+#include "Player.hpp"
+#include "Move.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -13,18 +16,23 @@ int main(int argc, char *argv[])
 	return 1;
     }
 
-    Game game(playerTexture, enemyTexture, window, 500);
+    Player player(playerTexture, window.getSize().x, window.getSize().y);
+    Game game(window, player);
+    EnemyGenerator enemyGenerator(enemyTexture, 250, 500, 5, window.getSize().x);
     
     while (window.isOpen()) {
 	if (game.isInProgress()) {
+	    player.move();
 	    game.moveEnemies();
 
 	    if (game.checkCollision()) {
 		game.stop();
 	    }
-	
-	    if (game.checkAddEnemy()) {
-		game.addEnemy();
+
+	    Enemy* enemy = enemyGenerator.generate();
+	    
+	    if (enemy != nullptr) {
+		game.addEnemy(enemy);
 	    }
 	}
 	game.render();
@@ -41,14 +49,16 @@ int main(int argc, char *argv[])
 		}
 	    } else if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Left) {
-		    game.movePlayerLeft();
+		    player.startMove(LEFT);
 		} else if (event.key.code == sf::Keyboard::Right) {
-		    game.movePlayerRight();
+		    player.startMove(RIGHT);
 		} else if (event.key.code == sf::Keyboard::Down) {
-		    game.movePlayerDown();
+		    player.startMove(DOWN);
 		} else if (event.key.code == sf::Keyboard::Up) {
-		    game.movePlayerUp();
+		    player.startMove(UP);
 		} 
+	    } else if (event.type == sf::Event::KeyReleased) {
+		player.endMove();
 	    }
 	}
     }

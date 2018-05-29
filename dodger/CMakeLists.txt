@@ -5,11 +5,15 @@ project(dodger)
 set(SRCS
   src/main.cpp
   src/Game.cpp
-  src/Enemy.cpp)
+  src/Enemy.cpp
+  src/EnemyGenerator.cpp
+  src/Player.cpp)
 
 set(HEADERS
   src/Game.hpp
-  src/Enemy.hpp)
+  src/Enemy.hpp
+  src/EnemyGenerator.hpp
+  src/Player.hpp)
 
 add_executable(dodger ${SRCS} ${HEADERS})
 

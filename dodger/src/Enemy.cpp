@@ -9,8 +9,8 @@ Enemy::Enemy(const unsigned speed, const unsigned x, const sf::Texture& enemyTex
 
 bool Enemy::checkMove() {
     int elapsedTime = clock.getElapsedTime().asMilliseconds();
-
-    if (elapsedTime >= speed) {
+    
+    if (elapsedTime >= (1000 / speed)) {
 	clock.restart();
 	return true;
     }
