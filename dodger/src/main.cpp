@@ -13,15 +13,33 @@ int main(int argc, char *argv[])
 	return 1;
     }
 
-    Game game(playerTexture, enemyTexture, window);
-    
+    Game game(playerTexture, enemyTexture, window, 500);
     
     while (window.isOpen()) {
+	if (game.isInProgress()) {
+	    game.moveEnemies();
+
+	    if (game.checkCollision()) {
+		game.stop();
+	    }
+	
+	    if (game.checkAddEnemy()) {
+		game.addEnemy();
+	    }
+	}
+	game.render();
+
 	sf::Event event;
 	while (window.pollEvent(event)) {
 	    if (event.type == sf::Event::Closed)
 		window.close();
-	    else if (event.type == sf::Event::KeyPressed) {
+
+	    if (! game.isInProgress()) {
+		if (event.type == sf::Event::KeyPressed &&
+		    event.key.code == sf::Keyboard::Space) {
+		    game.start();
+		}
+	    } else if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Left) {
 		    game.movePlayerLeft();
 		} else if (event.key.code == sf::Keyboard::Right) {
@@ -33,9 +51,8 @@ int main(int argc, char *argv[])
 		} 
 	    }
 	}
-
-	game.render();
     }
+
     
     return 0;
 }
