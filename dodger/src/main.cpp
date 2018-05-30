@@ -4,6 +4,23 @@
 #include "EnemyGenerator.hpp"
 #include "Player.hpp"
 #include "Move.hpp"
+#include "State.hpp"
+
+void moveEnemies(std::vector<Enemy*>& enemies) {
+    for (Enemy* enemy : enemies) {
+	if (enemy->checkMove()) {
+	    enemy->move();
+	}
+    }
+}
+
+void clearEnemies(std::vector<Enemy*>& enemies) {
+    for (Enemy* enemy : enemies) {
+	delete enemy;
+    }
+    
+    enemies.clear();
+}
 
 int main(int argc, char *argv[])
 {
@@ -17,35 +34,40 @@ int main(int argc, char *argv[])
     }
 
     Player player(playerTexture, window.getSize().x, window.getSize().y);
-    Game game(window, player);
+    std::vector<Enemy*> enemies;
+    Game game(window, player, enemies);
     EnemyGenerator enemyGenerator(enemyTexture, 250, 500, 5, window.getSize().x);
+    State state = INIT;
     
     while (window.isOpen()) {
-	if (game.isInProgress()) {
+	if (state == IN_PROGRESS) {
 	    player.move();
-	    game.moveEnemies();
+	    moveEnemies(enemies);
 
 	    if (game.checkCollision()) {
-		game.stop();
+		state = END;
+		clearEnemies(enemies);
 	    }
 
 	    Enemy* enemy = enemyGenerator.generate();
 	    
 	    if (enemy != nullptr) {
-		game.addEnemy(enemy);
+		enemies.push_back(enemy);
 	    }
 	}
-	game.render();
+	
+	game.render(state);
 
 	sf::Event event;
 	while (window.pollEvent(event)) {
 	    if (event.type == sf::Event::Closed)
 		window.close();
 
-	    if (! game.isInProgress()) {
+	    if (state != IN_PROGRESS) {
 		if (event.type == sf::Event::KeyPressed &&
 		    event.key.code == sf::Keyboard::Space) {
-		    game.start();
+		    state = IN_PROGRESS;
+		    player.reset();
 		}
 	    } else if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Left) {

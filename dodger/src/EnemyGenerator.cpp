@@ -18,10 +18,10 @@ Enemy* EnemyGenerator::generate() {
 	std::random_device rd;
 	std::mt19937 generator(rd());
 	std::uniform_int_distribution<int> distributionPosition(0, winX - enemyTexture.getSize().x);
-
 	std::uniform_int_distribution<int> distributionSpeed(minSpeed, maxSpeed);
-
-	Enemy* enemy = new Enemy(distributionSpeed(generator), distributionPosition(generator), enemyTexture);
+	std::uniform_real_distribution<float> distributionScale(0.5, 1.5);
+	
+	Enemy* enemy = new Enemy(distributionSpeed(generator), distributionPosition(generator), distributionScale(generator), enemyTexture);
 	return enemy;
     }
 
