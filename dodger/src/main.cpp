@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
 	return 1;
     }
 
-    Player player(playerTexture, 10000, window.getSize().x, window.getSize().y);
+    Player player(playerTexture, 5, window.getSize().x, window.getSize().y);
     std::vector<Enemy*> enemies;
     Game game(window, player, enemies);
-    EnemyGenerator enemyGenerator(enemyTexture, 250, 500, 3, window.getSize().x);
+    EnemyGenerator enemyGenerator(enemyTexture, 1, 10, 3, window.getSize().x);
     State state = INIT;
     
     while (window.isOpen()) {

@@ -8,14 +8,13 @@ class Player
 {
 private:
     sf::Sprite sprite;
-    sf::Clock clock;
     Move currentMove = STATIC;
-    unsigned speed;
+    int speed;
     unsigned winX;
     unsigned winY;
     
 public:
-    Player(const sf::Texture& playerTexture, const unsigned speed, const unsigned winX, const unsigned winY);
+    Player(const sf::Texture& playerTexture, const int speed, const unsigned winX, const unsigned winY);
     void move();
     void startMove(Move move);
     void endMove();

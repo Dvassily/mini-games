@@ -1,36 +1,37 @@
 #include "Player.hpp"
 #include <iostream>
 
-Player::Player(const sf::Texture& playerTexture, const unsigned speed, const unsigned winX, const unsigned winY)
+Player::Player(const sf::Texture& playerTexture, const int speed, const unsigned winX, const unsigned winY)
     : speed(speed), winX(winX), winY(winY) {
     sprite.setTexture(playerTexture);
     reset();
 }
 
 void Player::move() {
-    int elapsedTime = clock.getElapsedTime().asMilliseconds();
-    bool mustMove = true;
+    int moveX = 0;
+    int moveY = 0;
     
-    // if (elapsedTime >= (1000 / speed)) {
-    // 	clock.restart();
-    // 	mustMove = true;
-    // }
+    switch(currentMove) {
+    case UP:
+	moveY = -speed;
+	break;
+    case DOWN:
+	moveY = speed;
+	break;
+    case LEFT:
+	moveX = -speed;
+	break;
+    case RIGHT:
+	moveX = speed;
+	break;
+    }
 
-    if (mustMove) {
-	switch(currentMove) {
-	case UP:
-	    sprite.move(0, -5);
-	    break;
-	case DOWN:
-	    sprite.move(0, 5);
-	    break;
-	case LEFT:
-	    sprite.move(-5, 0);
-	    break;
-	case RIGHT:
-	    sprite.move(5, 0);
-	    break;
-	}
+    int newX = sprite.getPosition().x + moveX;
+    int newY = sprite.getPosition().y + moveY;
+
+    if (newX >= 0 && newX + sprite.getTexture()->getSize().x <= winX &&
+	newY >= 0 && newY + sprite.getTexture()->getSize().y <= winY) {
+	sprite.move(moveX, moveY);
     }
 }
 

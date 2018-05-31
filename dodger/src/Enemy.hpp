@@ -7,7 +7,6 @@ class Enemy
 {
 private:
     sf::Sprite sprite;
-    sf::Clock clock;
     const unsigned speed;
     
 public:

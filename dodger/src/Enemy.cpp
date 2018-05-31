@@ -8,12 +8,7 @@ Enemy::Enemy(const unsigned speed, const unsigned x, const float scale, const sf
 }
 
 void Enemy::move() {
-    int elapsedTime = clock.getElapsedTime().asMilliseconds();
-    
-    if (elapsedTime >= (1000 / speed)) {
-	clock.restart();
-	sprite.move(0, 1);
-    }
+    sprite.move(0, speed);
 }
 
 const sf::Sprite& Enemy::getSprite() {
