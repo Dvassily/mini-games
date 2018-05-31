@@ -8,9 +8,7 @@
 
 void moveEnemies(std::vector<Enemy*>& enemies) {
     for (Enemy* enemy : enemies) {
-	if (enemy->checkMove()) {
-	    enemy->move();
-	}
+	enemy->move();
     }
 }
 
@@ -25,6 +23,8 @@ void clearEnemies(std::vector<Enemy*>& enemies) {
 int main(int argc, char *argv[])
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Dodger");
+    window.setFramerateLimit(60);
+    
     sf::Texture playerTexture;
     sf::Texture enemyTexture;
 
@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
 	return 1;
     }
 
-    Player player(playerTexture, window.getSize().x, window.getSize().y);
+    Player player(playerTexture, 10000, window.getSize().x, window.getSize().y);
     std::vector<Enemy*> enemies;
     Game game(window, player, enemies);
-    EnemyGenerator enemyGenerator(enemyTexture, 250, 500, 5, window.getSize().x);
+    EnemyGenerator enemyGenerator(enemyTexture, 250, 500, 3, window.getSize().x);
     State state = INIT;
     
     while (window.isOpen()) {
@@ -54,10 +54,11 @@ int main(int argc, char *argv[])
 	    if (enemy != nullptr) {
 		enemies.push_back(enemy);
 	    }
+	    game.incrementScore();
 	}
-	
-	game.render(state);
 
+	game.render(state);
+	
 	sf::Event event;
 	while (window.pollEvent(event)) {
 	    if (event.type == sf::Event::Closed)
@@ -68,6 +69,7 @@ int main(int argc, char *argv[])
 		    event.key.code == sf::Keyboard::Space) {
 		    state = IN_PROGRESS;
 		    player.reset();
+		    game.resetScore();
 		}
 	    } else if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Left) {

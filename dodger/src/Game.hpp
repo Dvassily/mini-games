@@ -15,21 +15,20 @@ private:
     const int moveOffset = 10;
     Player& player;
     std::vector<Enemy*>& enemies;
+    int score = 0;
     sf::RenderWindow& window;
     sf::Clock clock;
     sf::Font font;
     sf::Text initText;
     sf::Text gameOverText;
+    sf::Text scoreText;
     
 public:
     Game(sf::RenderWindow& window, Player& player, std::vector<Enemy*>& enemies);
     void render(const State state);
-    void moveEnemies();
-    void addEnemy(Enemy* const enemy);
     bool checkCollision();
-    void start();
-    void stop();
-    bool isInProgress();
+    void incrementScore();
+    void resetScore();
 };
 
 #endif /* GAME_H */

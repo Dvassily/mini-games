@@ -8,6 +8,9 @@ Game::Game(sf::RenderWindow& window, Player& player, std::vector<Enemy*>& enemie
     gameOverText.setFont(font);
     initText.setString(initString);
     initText.setFont(font);
+    scoreText.setString("Score : " + std::to_string(score));
+    scoreText.setFont(font);
+    scoreText.setPosition(10, 10);
 }
 
 void Game::render(const State state) {
@@ -15,6 +18,7 @@ void Game::render(const State state) {
 
     if (state == END) {
 	window.draw(gameOverText);
+	window.draw(scoreText);
     } else if (state == INIT) {
 	window.draw(initText);
     } else if (state == IN_PROGRESS) {
@@ -23,6 +27,8 @@ void Game::render(const State state) {
 	for (Enemy* enemy : enemies) {
 	    window.draw(enemy->getSprite());
 	}
+
+	window.draw(scoreText);
     }
     
     window.display();
@@ -36,4 +42,14 @@ bool Game::checkCollision() {
     }
 
     return false;
+}
+
+void Game::incrementScore() {
+    ++score;
+    scoreText.setString("Score : " + std::to_string(score));
+}
+
+void Game::resetScore() {
+    score = 0;
+    scoreText.setString("Score : " + std::to_string(score));
 }

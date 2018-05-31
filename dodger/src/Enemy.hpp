@@ -12,7 +12,6 @@ private:
     
 public:
     Enemy(const unsigned speed, const unsigned x, const float scale, const sf::Texture& enemyTexture);
-    bool checkMove();
     void move();
     const sf::Sprite& getSprite();
 };
