@@ -10,12 +10,13 @@ class Game
 {
 private:
 
-    const std::string gameOverString = "Game over. Press a key to restart the game";
-    const std::string initString = "Press a key to start the game";
+    const std::string gameOverString = "Game over\nPress the spacebar to restart the game";
+    const std::string initString = "Press the spacebar to start the game";
     const int moveOffset = 10;
     Player& player;
     std::vector<Enemy*>& enemies;
     int score = 0;
+    int bestScore = 0;
     sf::RenderWindow& window;
     sf::Clock clock;
     sf::Font font;
@@ -29,6 +30,7 @@ public:
     bool checkCollision();
     void incrementScore();
     void resetScore();
+    void updateScore();
 };
 
 #endif /* GAME_H */

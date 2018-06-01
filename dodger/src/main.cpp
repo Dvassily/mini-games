@@ -20,10 +20,21 @@ void clearEnemies(std::vector<Enemy*>& enemies) {
     enemies.clear();
 }
 
+void cleanEnemies(std::vector<Enemy*>& enemies, int winY) {
+    enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [winY](Enemy* enemy) {
+		if (enemy->getSprite().getPosition().y >= winY) {
+		    delete enemy;
+		    return true;
+		}
+		
+		return false;
+	    }), enemies.end());
+}
+
 int main(int argc, char *argv[])
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Dodger");
-    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
     
     sf::Texture playerTexture;
     sf::Texture enemyTexture;
@@ -43,7 +54,8 @@ int main(int argc, char *argv[])
 	if (state == IN_PROGRESS) {
 	    player.move();
 	    moveEnemies(enemies);
-
+	    cleanEnemies(enemies, window.getSize().y);
+	    
 	    if (game.checkCollision()) {
 		state = END;
 		clearEnemies(enemies);

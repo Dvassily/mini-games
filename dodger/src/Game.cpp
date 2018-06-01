@@ -4,10 +4,21 @@ Game::Game(sf::RenderWindow& window, Player& player, std::vector<Enemy*>& enemie
     : window(window), player(player), enemies(enemies)
 {
     font.loadFromFile("res/LiberationMono-Bold.ttf");
-    gameOverText.setString(gameOverString);
-    gameOverText.setFont(font);
+
     initText.setString(initString);
     initText.setFont(font);
+    sf::FloatRect textRect = initText.getLocalBounds();
+    initText.setOrigin(textRect.left + textRect.width  / 2,
+			   textRect.top  + textRect.height / 2);
+    initText.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2));
+    
+    gameOverText.setString(gameOverString);
+    gameOverText.setFont(font);
+    textRect = gameOverText.getLocalBounds();
+    gameOverText.setOrigin(textRect.left + textRect.width  / 2,
+			   textRect.top  + textRect.height / 2);
+    gameOverText.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2));
+
     scoreText.setString("Score : " + std::to_string(score));
     scoreText.setFont(font);
     scoreText.setPosition(10, 10);
@@ -46,10 +57,27 @@ bool Game::checkCollision() {
 
 void Game::incrementScore() {
     ++score;
-    scoreText.setString("Score : " + std::to_string(score));
+
+    updateScore();
 }
 
 void Game::resetScore() {
+    if (score > bestScore) {
+	bestScore = score;
+    }
+    
     score = 0;
-    scoreText.setString("Score : " + std::to_string(score));
+
+    updateScore();
+}
+
+void Game::updateScore() {
+    std::string scoreString = "Score : " + std::to_string(score);
+
+    if (bestScore > 0) {
+	scoreString += "\nBest score : " + std::to_string(bestScore);
+    }
+    
+    scoreText.setString(scoreString);
+
 }
