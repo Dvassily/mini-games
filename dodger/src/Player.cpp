@@ -10,20 +10,17 @@ Player::Player(const sf::Texture& playerTexture, const int speed, const unsigned
 void Player::move() {
     int moveX = 0;
     int moveY = 0;
-    
-    switch(currentMove) {
-    case UP:
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 	moveY = -speed;
-	break;
-    case DOWN:
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 	moveY = speed;
-	break;
-    case LEFT:
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 	moveX = -speed;
-	break;
-    case RIGHT:
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 	moveX = speed;
-	break;
     }
 
     int newX = sprite.getPosition().x + moveX;
@@ -33,14 +30,6 @@ void Player::move() {
 	newY >= 0 && newY + sprite.getTexture()->getSize().y <= winY) {
 	sprite.move(moveX, moveY);
     }
-}
-
-void Player::startMove(Move move) {
-    this->currentMove = move;
-}
-
-void Player::endMove() {
-    this->currentMove = STATIC;
 }
 
 void Player::reset() {

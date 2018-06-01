@@ -83,18 +83,6 @@ int main(int argc, char *argv[])
 		    player.reset();
 		    game.resetScore();
 		}
-	    } else if (event.type == sf::Event::KeyPressed) {
-		if (event.key.code == sf::Keyboard::Left) {
-		    player.startMove(LEFT);
-		} else if (event.key.code == sf::Keyboard::Right) {
-		    player.startMove(RIGHT);
-		} else if (event.key.code == sf::Keyboard::Down) {
-		    player.startMove(DOWN);
-		} else if (event.key.code == sf::Keyboard::Up) {
-		    player.startMove(UP);
-		} 
-	    } else if (event.type == sf::Event::KeyReleased) {
-		player.endMove();
 	    }
 	}
     }
